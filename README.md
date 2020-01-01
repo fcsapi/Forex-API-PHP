@@ -10,12 +10,18 @@ Your access Key is the unique key that is passed into the function
 
 
 # Set your API response format.
-$forex->set_output_type('JSON');
+Set your API response format.<br>
+Default: JSON<br>
+Valid Values: JSON, JSONP, object, XML, serialize and array<br>
+> $forex->set_output_type('JSON');
 
 
 # Return All symbols
-$forex->get_symbols_list();
+Return All symbols<br>
+If the value of top_symbol=1, It will return a list of popular currencies.
+> $forex->get_symbols_list();
 
 
 # get profile
-$forex->get_profile('1,2,3');
+By profile API, you can get the profiles of the different currencies by passing their IDs, Symbols or Single currency short name
+> $forex->get_profile('1,2,3');
