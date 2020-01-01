@@ -10,3 +10,11 @@
 
 # Set your API response format.
 // $forex->set_output_type('JSON');
+
+
+# Return All symbols
+// $forex->get_symbols_list();
+
+
+# get profile
+// $forex->get_profile('1,2,3');
