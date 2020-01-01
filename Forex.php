@@ -31,7 +31,7 @@ Version: 1.0
   ================================================*/
 
 
-class FCS_Functions {
+class Forex_Functions {
 	private $api_key = '';
 	private $output = 'json';
 
