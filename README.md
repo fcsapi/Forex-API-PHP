@@ -5,7 +5,8 @@
 
 
 # set_access_key
-$forex->set_access_key($api_key);
+Your access Key is the unique key that is passed into the function
+> $forex->set_access_key($api_key);
 
 
 # Set your API response format.
