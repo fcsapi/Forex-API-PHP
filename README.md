@@ -5,7 +5,7 @@
 
 # set_access_key
 Your access Key is the unique key that is passed into the function <a href='https://fcsapi.com/login?q=signup' target='_blank'>Get your access key</a>
-> $forex->set_access_key($api_key);
+> $forex->set_access_key('Your access key');
 
 
 # Set your API response format.
