@@ -1,6 +1,6 @@
 > require_once(__DIR__.'/Forex.php');
 
-> $forex = new FCS_Functions();
+> $forex = new Forex_Functions();
 
 
 # set_access_key
