@@ -5,16 +5,16 @@
 
 
 # set_access_key
-// $forex->set_access_key($api_key);
+$forex->set_access_key($api_key);
 
 
 # Set your API response format.
-// $forex->set_output_type('JSON');
+$forex->set_output_type('JSON');
 
 
 # Return All symbols
-// $forex->get_symbols_list();
+$forex->get_symbols_list();
 
 
 # get profile
-// $forex->get_profile('1,2,3');
+$forex->get_profile('1,2,3');
