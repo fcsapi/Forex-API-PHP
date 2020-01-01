@@ -2,7 +2,7 @@
 require_once(__DIR__.'/Forex.php');
 
 global $forex;
-$forex = new FCS_Functions();
+$forex = new Forex_Functions();
 
 /*======================================
 Your access Key is the unique key that is passed into the function
