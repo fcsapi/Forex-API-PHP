@@ -6,9 +6,8 @@ require_once(__DIR__.'/config.php');
 require_once(__DIR__.'/api/FCS_forex.php');
 
 $forex = new FCS_forex();
-
 ## GET latest prices
-$response = $forex->get_base_prices('EUR');
+$response = $forex->get_latest_price( ['EUR/USD','JPY/USD'] );
 
 echo "<pre>";
 print_r($response);
@@ -30,11 +29,11 @@ print_r($response);
 
 	$response = $forex->	get_latest_price('all_forex');
 	$response = $forex->	get_latest_price('1,2'); // by id, Latest OHLC
-	$response = $forex->	get_latest_price('EUR/USD'); // OHLC, Ask,bid,spread, change 
+	$response = $forex->	get_latest_price( ['EUR/USD','JPY/USD'] ); // OHLC, Ask,bid,spread, change 
 	
-	$response = $forex->	get_last_candle('all_forex',	5m');
-	$response = $forex->	get_last_candle('all_forex',	1h');
-	$response = $forex->	get_last_candle('all_forex',	1d');
+	$response = $forex->	get_last_candle('all_forex',	'5m');
+	$response = $forex->	get_last_candle('all_forex',	'1h');
+	$response = $forex->	get_last_candle('all_forex',	'1d');
 	$response = $forex->	get_last_candle('1,2,3,4,5',	'1d'); 	// OHLC of specific time period
 	
 	$response = $forex->	get_pivot_points('1','1d'); 		// Support / Resistance
