@@ -1,15 +1,23 @@
-# Forex Latest Prices API - PHP
+# Live Forex API - PHP
 
-V3 Update: 2021-02-12
+<b>Update: 2021-02-12 (version 3)</b>
 
-FCS forex exchange quotes API  is a PHP Library for fetching forex quotes, provide response in JSON format
+FCS currency exchange quotes API is a PHP Library for fetching forex quotes, provide response in array or JSON format.
+This library is designed to get latest exchange quotes data, historical rates, economy calendar and indicators data. 
+
+## API Supports
+* 2000+ Currency exchange rates.
+* 10 secods price update frequency
+* 25 years historical data
+* MA lines and indicators signals
+* Economic calendar data
 
 ## Requirements
 * PHP >= 5.6
 * An API key, you can get free at https://fcsapi.com/dashboard
 
 ## Installation
-Download zip OR api directory from github and place it in your project, and in your php file.
+Include FCS php library files in your project from github. Next
 ````PHP
 <?php 
 use FCS\FCS_forex;
@@ -22,18 +30,20 @@ require_once(__DIR__.'/api/FCS_forex.php'); // Include library
 <?php
 
 // You can get your API key from fcsapi.com
-define('FCS_KEY',	'API_KEY');
+define('FCS_KEY', 'API_KEY');
 
-$forex = new FCS_forex(); // class object
+$forex = new FCS_forex(); // create class object
 
 ````
-### API Output
-Default output is array in php, valid values are: array, json, jsonp, object, xml, serialize
+### API reponse format
+Default output is array for php, valid values are: array, json, jsonp, object, xml, serialize
 ```PHP
-$forex->set_output_type('JSON');
+$forex->set_output_type('JSON'); // optional
 ```
 ### 	Get the list of available symbols:
-> $response = $forex->get_symbols_list();
+````PHP
+$response = $forex->get_symbols_list();
+````
 
 ### Get quotes for specific currency:
 ````PHP
@@ -91,8 +101,8 @@ You can  check full documentaions here [https://fcsapi.com/document/forex-api](h
 	$response = $forex->	get_search_query('BTC Dollar',0);  // contain any words
 	$response = $forex->	get_search_query('BTC Dollar',1); // contain all words
 
-	$params 	  = array('id'=>1,'period'=>'1h','limit'=>2);
-	$response = $forex->	get_history($params);
+	$response = $forex->	get_history( ['id'=>1,'period'=>'1h'] );
+	$response = $forex->	get_history( ['id'=>1,'period'=>'1h','from'=>'2020-01-01', 'to'=>'2020-01-31'] );
 
 ````
 
