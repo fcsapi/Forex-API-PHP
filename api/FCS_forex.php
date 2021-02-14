@@ -35,6 +35,7 @@ require_once(__DIR__.'/helper.php');
 class FCS_forex {
 	private $api_key 		= '';
 	private $output 		= ''; // default is json
+	private $output_type 	= 'array'; // default is json
 	private $basic_url 	= "https://fcsapi.com/api-v3/forex";
 	private $api_message = "API Key is empty, please set your API Key in config.php";
 
@@ -68,7 +69,8 @@ class FCS_forex {
 			$output_type == 'object' ||   $output_type == 'xml' ||  
 			$output_type == 'serialize' || $output_type == 'array' )
 		{
-			if($output_type != "json")
+			$this->output_type  = $output_type;
+			if($output_type != "json" && $output_type != "array")
 				$this->output = "&output=".$output_type;
 		}
 		else{
@@ -106,7 +108,9 @@ class FCS_forex {
 			2) $forex->get_profile('CHF,USD,JPY,GBP');
 			3) $forex->get_profile('CHF/USD,JPY/GBP');
 	======================================*/
-	public function get_profile($symbol=''){
+	public function get_profile($symbol){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -165,7 +169,9 @@ class FCS_forex {
 			1) $forex->get_latest_price('1,2');
 			2) $forex->get_latest_price('EUR/USD,USD/JPY');
 	======================================*/
-	public function get_latest_price($symbol=''){
+	public function get_latest_price($symbol){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -185,7 +191,9 @@ class FCS_forex {
 			2) $forex->get_base_prices("JPY");
 			2) $forex->get_base_prices('JPY','crypto');
 	======================================*/
-	public function get_base_prices($symbol='',$type="forex"){
+	public function get_base_prices($symbol,$type="forex"){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -212,7 +220,9 @@ class FCS_forex {
 			1) $forex->get_last_candle('1,2,3','1d');
 			2) $forex->get_last_candle('EUR/USD,USD/JPY','1d');
 	======================================*/
-	public function get_last_candle($symbol='',$period='1h'){
+	public function get_last_candle($symbol,$period='1h'){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -242,6 +252,8 @@ class FCS_forex {
 	================================================*/
 	public function get_history($data){
 		$symbol 		= empty($data['id']) 			? "" 		: $data['id'];
+		$symbol 		= is_array($symbol) 		? implode(",", $symbol) : $symbol;
+
 		$period 		= empty($data['period']) 	? "1h" 	: $data['period'];
 		$limit 			= empty($data['limit']) 		? "1" 	: $data['limit'];
 		$from 			= empty($data['from']) 		? "" 		: $data['from'];
@@ -278,7 +290,9 @@ class FCS_forex {
 			1) $forex->get_pivot_points('1', '1h');
 			2) $forex->get_pivot_points('EUR/USD', '1h');
 	================================================*/
-	public function get_pivot_points($symbol='',$period='1h'){
+	public function get_pivot_points($symbol,$period='1h'){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -304,7 +318,9 @@ class FCS_forex {
 			1) $forex->get_moving_averages('1', '1h');
 			2) $forex->get_moving_averages('EUR/USD', '1h');
 	================================================*/
-	public function get_moving_averages($symbol='',$period='1h'){
+	public function get_moving_averages($symbol,$period='1h'){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -330,7 +346,9 @@ class FCS_forex {
 			1) $forex->get_technical_indicator('1', '1h');
 			2) $forex->get_technical_indicator('EUR/USD', '1h');
 	================================================*/
-	public function get_technical_indicator($symbol='',$period='1h'){
+	public function get_technical_indicator($symbol,$period='1h'){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -348,6 +366,8 @@ class FCS_forex {
 		$forex->	get_economy_calendar('USD','2021-02-01','2021-02-10');
 	================================================*/
 	public function get_economy_calendar($symbol,$from='',$to=''){
+		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+
 		if(!$this->check_api_key())
 			return $this->api_message;
 
@@ -403,11 +423,12 @@ class FCS_forex {
 
 	private function response($url){
 		$respone = fcs_curl($url);
-		$decode = json_decode($respone,true);
-		if($decode === false || $decode === NULL)
-			return $respone;
-		else
-			return $decode;
+		if($this->output_type == "array"){
+			$decode 	= json_decode($respone,true);
+			if(!empty($decode))
+				return $decode;
+		}
+		return $respone;
 	}
 }
 
