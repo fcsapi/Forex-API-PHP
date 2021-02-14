@@ -1,7 +1,9 @@
 <?php
 
+use FCS\FCS_forex;
+
 require_once(__DIR__.'/config.php');
-require_once(__DIR__.'/api/Forex.php');
+require_once(__DIR__.'/api/FCS_forex.php');
 
 $forex = new FCS_forex();
 
