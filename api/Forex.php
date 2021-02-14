@@ -31,7 +31,7 @@ Version: 1.0
 
 require_once(__DIR__.'/helper.php');
 
-class Forex_Functions {
+class FCS_forex {
 	private $api_key 		= '';
 	private $output 		= ''; // default is json
 	private $basic_url 	= "https://fcsapi.com/api-v3/forex";
