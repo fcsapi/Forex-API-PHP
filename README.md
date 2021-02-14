@@ -106,9 +106,12 @@ You can  check full documentaions here [https://fcsapi.com/document/forex-api](h
 
 ````
 
+### Other Links
+Forex live prices with php Socket : [Github Real Time prices](https://github.com/fcsapi/Real-Time-Prices-with-Socket-PHP)
+Forex JS websocket : [https://fcsapi.com/document/socket-api](https://fcsapi.com/document/socket-api)
 
 ## Support and Contact
 you can contact us at [support@fcsapi.com](mailto:support@fcsapi.com) or Live chat at https://fcsapi.com
 
 ## License and Terms
-This library is provided under the MIT license, also FCS terms and conditons apply.
+This library is provided under the MIT license, also FCS privacy policy, terms and conditons apply.
