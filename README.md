@@ -1,26 +1,104 @@
-> require_once(__DIR__.'/Forex.php');
+# Forex Latest Prices API - PHP
 
-> $forex = new Forex_Functions();
+V3 Update: 2021-02-12
+
+FCS forex exchange quotes API  is a PHP Library for fetching forex quotes, provide response in JSON format
+
+## Requirements
+* PHP >= 5.6
+* An API key, you can get free at https://fcsapi.com/dashboard
+
+## Installation
+Download zip OR api directory from github and place it in your project, and in your php file.
+````PHP
+<?php 
+use FCS\FCS_forex;
+
+require_once(__DIR__.'/api/FCS_forex.php'); // Include library
+
+````
+### Instantiate the client
+````PHP
+<?php
+
+// You can get your API key from fcsapi.com
+define('FCS_KEY',	'API_KEY');
+
+$forex = new FCS_forex(); // class object
+
+````
+### API Output
+Default output is array in php, valid values are: array, json, jsonp, object, xml, serialize
+```PHP
+$forex->set_output_type('JSON');
+```
+### 	Get the list of available symbols:
+> $response = $forex->get_symbols_list();
+
+### Get quotes for specific currency:
+````PHP
+$response = $forex->get_latest_price([
+	'EUR/USD',
+	'USD/JPY',
+	'GBP/AUD'
+]);
+
+// OR  without array
+$response = $forex->get_latest_price('EUR/USD,GBP/AUD');
+
+// OR  by ids
+$response = $forex->get_latest_price('1,2,3,4');
+````
+
+#### Convert one currency into another:
+Convert 200 EUR : output = 240USD
+````PHP
+$response = $forex->	get_converter(200, 'EUR','USD');
+````
+
+### Other API methods
+You can  check full documentaions here [https://fcsapi.com/document/forex-api](https://fcsapi.com/document/forex-ap)
+````PHP
+<?php 
+	$response = $forex->	get_symbols_list();
+	$response = $forex->	get_profile('EUR,USD,JPY');
+	$response = $forex->	get_converter(200, 'EUR','USD'); // 200EUR to output 240 USD
+	
+	$response = $forex->	get_base_prices('EUR');
+	$response = $forex->	get_base_prices('EUR','crypto');
+
+	$response = $forex->	get_latest_price('all_forex');
+	$response = $forex->	get_latest_price('1,2'); // by id, Latest OHLC
+	$response = $forex->	get_latest_price( ['EUR/USD','JPY/USD'] ); // OHLC, Ask,bid,spread, change 
+	
+	$response = $forex->	get_last_candle('all_forex',	'5m');
+	$response = $forex->	get_last_candle('all_forex',	'1h');
+	$response = $forex->	get_last_candle('all_forex',	'1d');
+	$response = $forex->	get_last_candle('1,2,3,4,5',	'1d'); 	// OHLC of specific time period
+	
+	$response = $forex->	get_pivot_points('1','1d'); 		// Support / Resistance
+	$response = $forex->	get_pivot_points('EUR/USD','4h');
+	
+	$response = $forex->	get_moving_averages('1','1d'); // MA Lines signals
+	$response = $forex->	get_moving_averages('EUR/USD','1d');
+
+	$response = $forex->	get_technical_indicator('1','1d'); // Top Indicators
+	$response = $forex->	get_technical_indicator('EUR/USD','1d');
+
+	$response = $forex->	get_economy_calendar('USD,JPY');
+	$response = $forex->	get_economy_calendar('USD','2021-02-01','2021-02-10');
+	
+	$response = $forex->	get_search_query('BTC Dollar',0);  // contain any words
+	$response = $forex->	get_search_query('BTC Dollar',1); // contain all words
+
+	$params 	  = array('id'=>1,'period'=>'1h','limit'=>2);
+	$response = $forex->	get_history($params);
+
+````
 
 
-# set_access_key
-Your access Key is the unique key that is passed into the function <a href='https://fcsapi.com/login?q=signup' target='_blank'>Get your access key</a>
-> $forex->set_access_key('Your access key');
+## Support and Contact
+you can contact us at [support@fcsapi.com](mailto:support@fcsapi.com) or Live chat at https://fcsapi.com
 
-
-# Set your API response format.
-Set your API response format.<br>
-Default: JSON<br>
-Valid Values: JSON, JSONP, object, XML, serialize and array<br>
-> $forex->set_output_type('JSON');
-
-
-# Return All symbols
-Return All symbols<br>
-If the value of top_symbol=1, It will return a list of popular currencies.
-> $forex->get_symbols_list();
-
-
-# get profile
-By profile API, you can get the profiles of the different currencies by passing their IDs, Symbols or Single currency short name
-> $forex->get_profile('1,2,3');
+## License and Terms
+This library is provided under the MIT license, also FCS terms and conditons apply.
