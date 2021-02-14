@@ -11,3 +11,6 @@ $api_key = "API_KEY"; // signup to get your api_key
 
 
 define("FCS_KEY",	$api_key); 
+
+
+?>
