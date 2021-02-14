@@ -5,7 +5,7 @@
 FCS currency exchange quotes API is a PHP Library for fetching forex quotes, provide response in array or JSON format.
 This library is designed to get latest exchange quotes data, historical rates, economy calendar and indicators data. 
 
-## API Supports
+## API Supports Features
 * 2000+ Currency exchange rates.
 * 10 secods price update frequency
 * 25 years historical data
@@ -107,7 +107,7 @@ You can  check full documentaions here [https://fcsapi.com/document/forex-api](h
 ````
 
 ### Other Links
-Forex live prices with php Socket : [Github Real Time prices](https://github.com/fcsapi/Real-Time-Prices-with-Socket-PHP)
+Forex live prices with php Socket : [Github Real Time prices](https://github.com/fcsapi/Real-Time-Prices-with-Socket-PHP) <br>
 Forex JS websocket : [https://fcsapi.com/document/socket-api](https://fcsapi.com/document/socket-api)
 
 ## Support and Contact
