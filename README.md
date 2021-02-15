@@ -50,11 +50,11 @@ $response = $forex->get_symbols_list();
 $response = $forex->get_latest_price([
 	'EUR/USD',
 	'USD/JPY',
-	'GBP/AUD'
+	'GBP/CHF'
 ]);
 
 // OR  without array
-$response = $forex->get_latest_price('EUR/USD,GBP/AUD');
+$response = $forex->get_latest_price('EUR/USD,GBP/CHF');
 
 // OR  by ids
 $response = $forex->get_latest_price('1,2,3,4');
