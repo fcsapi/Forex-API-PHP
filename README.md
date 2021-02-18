@@ -75,6 +75,7 @@ You can  check full documentaions here [https://fcsapi.com/document/forex-api](h
 	$response = $forex->	get_converter(200, 'EUR','USD'); // 200EUR to output 240 USD
 	
 	$response = $forex->	get_base_prices('EUR');
+	$response = $forex->	get_base_prices('EUR','forex',true); // return with last update time
 	$response = $forex->	get_base_prices('EUR','crypto');
 
 	$response = $forex->	get_latest_price('all_forex');
