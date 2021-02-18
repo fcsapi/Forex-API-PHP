@@ -19,11 +19,13 @@ Version: 1.0
 #5.	get_converter()
 #6.	get_latest_price()
 #7.	get_last_candle()
-#8.	get_history()
-#9.	get_history_graphic_chart()
+#8.	get_base_prices()
+#9.	get_history()
 #10. get_pivot_points()
 #11. get_moving_averages()
 #12. get_technical_indicator()
+#13. get_search_query()
+#14. get_search_query()
 
   ================================================
   [ End table content ]
@@ -41,7 +43,7 @@ class FCS_forex {
 
 	function __construct(){
 		if(defined("FCS_KEY")){
-			$this->api_key = "&access_key=".FCS_KEY;
+			$this->api_key = FCS_KEY;
 		}
 		if(empty(FCS_KEY)){
 			$this->api_key = false; // API can access by IP, set in your profile
@@ -53,7 +55,7 @@ class FCS_forex {
 		$forex->set_access_key('your_access_key');
 	================================================*/
 	public function set_access_key($key=''){
-		$this->api_key = "&access_key=".$key;
+		$this->api_key = $key;
 	}
 
 
@@ -71,7 +73,7 @@ class FCS_forex {
 		{
 			$this->output_type  = $output_type;
 			if($output_type != "json" && $output_type != "array")
-				$this->output = "&output=".$output_type;
+				$this->output = $output_type;
 		}
 		else{
 			return 'Your output value is wrong.<br>Valid Values are: JSON, JSONP, object, XML, serialize and array';
@@ -90,8 +92,11 @@ class FCS_forex {
 		if(!$this->check_api_key())
 			return $this->api_message;
 
-		$link = $this->basic_url."/list?type=forex".$this->api_key.$this->output;
-		return $this->response($link);
+		$params 	= array();
+		$params['type'] = 'forex';
+		
+		$link = $this->basic_url."/list";
+		return $this->response($link,$params);
 	}
 
 
@@ -118,9 +123,11 @@ class FCS_forex {
 			return false;
 
 		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/profile?$symbol_id=$symbol".$this->api_key.$this->output;
+		$params 	= array();
+		$params[$symbol_id] = $symbol; // ID/symbol
 
-		return $this->response($link);
+		$link = $this->basic_url."/profile";
+		return $this->response($link, $params);
 	}
 
 	/*======================================
@@ -145,16 +152,20 @@ class FCS_forex {
 		if(empty($pair_one))
 			return false;
 
+		$params 	= array();
+
 		if(!empty($pair_two)){
-			$link = $this->basic_url."/converter?pair1=$pair_one&pair2=$pair_two";
+			$params['pair1'] = $pair_one;
+			$params['pair2'] = $pair_two;
 		}
 		else{
 			$symbol_id = $this->check_symbol_id($pair_one);
-			$link = $this->basic_url."/converter?$symbol_id=$pair_one";
+			$params[$symbol_id] = $pair_one;
 		}
+		$params['amount'] = $amount;
 
-		$link .= "&amount=$amount".$this->api_key.$this->output;
-		return $this->response($link);
+		$link = $this->basic_url."/converter";
+		return $this->response($link,$params);
 	}
 
 
@@ -179,9 +190,11 @@ class FCS_forex {
 			return false;
 
 		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/latest?$symbol_id=$symbol".$this->api_key.$this->output;
+		$params 	= array();
+		$params[$symbol_id] 	= $symbol; // ID/symbol
 
-		return $this->response($link);
+		$link = $this->basic_url."/latest";
+		return $this->response($link,$params);
 	}
 
 	/*======================================
@@ -191,8 +204,9 @@ class FCS_forex {
 			2) $forex->get_base_prices("JPY");
 			2) $forex->get_base_prices('JPY','crypto');
 	======================================*/
-	public function get_base_prices($symbol,$type="forex"){
+	public function get_base_prices($symbol,$type="forex",$time=false){
 		$symbol = is_array($symbol) ? implode(",", $symbol) : $symbol;
+		$type = empty($type) ? "forex" : $type;
 
 		if(!$this->check_api_key())
 			return $this->api_message;
@@ -200,10 +214,14 @@ class FCS_forex {
 		if(empty($symbol))
 			return false;
 
-		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/base_latest?symbol=$symbol&type=$type".$this->api_key.$this->output;
+		$params 	= array();
+		$params['symbol'] 	= $symbol;
+		$params['type'] 		= $type;
+		if($time)
+			$params['time'] 		= 1;
 
-		return $this->response($link);
+		$link = $this->basic_url."/base_latest";
+		return $this->response($link , $params);
 	}
 
 
@@ -230,9 +248,13 @@ class FCS_forex {
 			return false;
 
 		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/candle?$symbol_id=$symbol&period=$period".$this->api_key.$this->output;
+		
+		$params 	= array();
+		$params[$symbol_id] 	= $symbol; // ID/symbol
+		$params['period'] 		= $period;
 
-		return $this->response($link);
+		$link = $this->basic_url."/candle";
+		return $this->response($link,$params);
 	}
 
 
@@ -266,14 +288,20 @@ class FCS_forex {
 			return false;
 
 		$symbol_id = $this->check_symbol_id($symbol); // id or symbol
-		$link = $this->basic_url."/history?$symbol_id=$symbol&period=$period&level=$limit";
+
+		$params 	= array();
+		$params[$symbol_id] 	= $symbol; // ID/symbol
+		$params['period'] 		= $period;
+		$params['level'] 		= $limit;
+
 
 		if(!empty($from) && !empty($to)){
-			$link .= "&from=$from&to=$to";
+			$params['from'] 		= $from;
+			$params['to'] 		= $to;
 		}
-		$link .= "".$this->api_key.$this->output;
 
-		return $this->response($link);
+		$link = $this->basic_url."/history";
+		return $this->response($link, $params);
 	}
 
 	/*================================================
@@ -300,9 +328,12 @@ class FCS_forex {
 			return false;
 
 		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/pivot_points?$symbol_id=$symbol&period=$period".$this->api_key.$this->output;
+		$params 		= array();
+		$params[$symbol_id] 	= $symbol; // ID/symbol
+		$params['period'] 		= $period;
 
-		return $this->response($link);
+		$link 	= $this->basic_url."/pivot_points";
+		return $this->response($link , $params);
 	}
 
 
@@ -328,9 +359,12 @@ class FCS_forex {
 			return false;
 
 		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/ma_avg?$symbol_id=$symbol&period=$period".$this->api_key.$this->output;
+		$params 		= array();
+		$params[$symbol_id] 	= $symbol; // ID/symbol
+		$params['period'] 		= $period;
 
-		return $this->response($link);
+		$link = $this->basic_url."/ma_avg";
+		return $this->response($link, $params);
 	}
 
 
@@ -355,9 +389,12 @@ class FCS_forex {
 		if(empty($symbol))
 			return false;
 		$symbol_id = $this->check_symbol_id($symbol);
-		$link = $this->basic_url."/indicators?$symbol_id=$symbol&period=$period".$this->api_key.$this->output;
+		$params 		= array();
+		$params[$symbol_id] 	= $symbol; // ID/symbol
+		$params['period'] 		= $period;
 
-		return $this->response($link);
+		$link = $this->basic_url."/indicators";
+		return $this->response($link, $params);
 	}
 
 	/*================================================
@@ -373,9 +410,13 @@ class FCS_forex {
 
 		if(empty($symbol))
 			return false;
-		$link = $this->basic_url."/economy_cal?symbol=$symbol&from=$from&to=$to".$this->api_key.$this->output;
+		$params 		= array();
+		$params['symbol'] 	= $symbol;
+		$params['from'] 		= $from;
+		$params['to'] 			= $to;
 
-		return $this->response($link);
+		$link = $this->basic_url."/economy_cal";
+		return $this->response($link,$params);
 	}
 
 
@@ -390,9 +431,12 @@ class FCS_forex {
 
 		if(empty($search))
 			return false;
-		$link = $this->basic_url."/search?s=$search&strict=$strict".$this->api_key.$this->output;
+		$params 		= array();
+		$params['s'] 		= $search;
+		$params['strict'] 	= $strict;
 
-		return $this->response($link);
+		$link = $this->basic_url."/search";
+		return $this->response($link, $params);
 	}
 
 
@@ -421,8 +465,13 @@ class FCS_forex {
 		return $type;
 	}
 
-	private function response($url){
-		$respone = fcs_curl($url);
+	private function response($url, $params){
+		if(!empty($this->api_key))
+			$params['access_key'] = $this->api_key;
+		if(!empty($this->output))
+			$params['output'] = $this->output;
+		
+		$respone = fcs_curl($url, $params);
 		if($this->output_type == "array"){
 			$decode 	= json_decode($respone,true);
 			if(!empty($decode))
