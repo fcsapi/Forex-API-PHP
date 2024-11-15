@@ -111,8 +111,8 @@ You can  check full documentaions here [https://fcsapi.com/document/forex-api](h
 - **Forex live prices with php Socket:** [Github Real Time prices](https://github.com/fcsapi/Real-Time-Prices-with-Socket-PHP) <br>
 - **Forex JS websocket:** [https://fcsapi.com/document/socket-api](https://fcsapi.com/document/socket-api)
 
-- **Forex Python Library:** [Available on GitHub](https://github.com/fcsapi/Forex-API-Python)
-- **Forex Node JS Library:** [Available on GitHub](https://github.com/fcsapi/forex-api-node-js)
+- **Python Library:** [Forex API Python](https://github.com/fcsapi/Forex-API-Python)
+- **NodeJS Library:** [Forex API Node Js](https://github.com/fcsapi/forex-api-node-js)
 
 
 ## Support and Contact
